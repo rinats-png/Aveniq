@@ -1,0 +1,30 @@
+services:
+  aveniq:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8768:8768"
+    environment:
+      AVENIQ_HOST: "0.0.0.0"
+      AVENIQ_PORT: "8768"
+      AVENIQ_DB: /app/data/aveniq.db
+      # Only safe with the host port bound to loopback as above.
+      AVENIQ_ALLOW_REMOTE_SETUP: I_ACCEPT_THE_RISK
+      AVENIQ_PUBLIC_ORIGIN: "http://127.0.0.1:8768"
+      AVENIQ_ACCOUNT_WORK_USER: ${AVENIQ_ACCOUNT_WORK_USER:-}
+      AVENIQ_ACCOUNT_WORK_PASSWORD: ${AVENIQ_ACCOUNT_WORK_PASSWORD:-}
+      AVENIQ_CAL_TEAM_USER: ${AVENIQ_CAL_TEAM_USER:-}
+      AVENIQ_CAL_TEAM_PASSWORD: ${AVENIQ_CAL_TEAM_PASSWORD:-}
+      AVENIQ_OPENAI_API_KEY: ${AVENIQ_OPENAI_API_KEY:-}
+      AVENIQ_OPENAI_MODEL: ${AVENIQ_OPENAI_MODEL:-gpt-4.1-mini}
+    volumes:
+      - aveniq_data:/app/data
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+volumes:
+  aveniq_data:

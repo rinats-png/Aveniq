@@ -1,0 +1,10 @@
+.git
+.github
+.env
+.env.*
+!.env.example
+data
+__pycache__
+*.pyc
+*.db
+*.zip

@@ -1,0 +1,21 @@
+name: Quality and privacy gates
+on:
+  push:
+  pull_request:
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile
+        run: python -m compileall -q aveniq
+      - name: Unit and HTTP tests
+        run: python -m unittest discover -v
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: JavaScript syntax check
+        run: node --check web/app.js
